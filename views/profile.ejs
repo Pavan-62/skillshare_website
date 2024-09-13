@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Management - Skill Sharing Platform</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #007BFF;
+            color: #fff;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 35px;
+            font-weight: bold;
+            margin-left: 30px;
+        }
+
+        .logo-img {
+            width: 60px; 
+            height: 60px; 
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #343a40;
+            color: #fff;
+            padding: 60px 20px 20px;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            font-size: 20px;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #007BFF;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 100px 40px 20px;
+            flex-grow: 1;
+        }
+
+        .main-content h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .profile-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .profile-section h2 {
+            color: #007BFF;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .profile-section input,
+        .profile-section textarea {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        .profile-picture {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            color: #007BFF;
+            cursor: pointer;
+        }
+
+        .edit-save-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .edit-save-buttons button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+
+        .edit-save-buttons button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.9xYSorMRnQt8z7b71ocUTAHaHa&pid=Api&P=0&h=180" alt="Logo" class="logo-img">
+            <div class="logo">Skill Sharing Platform</div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <a href="/profile"><b>Profile Management</b></a>
+        <a href="/workshop"><b>Workshops</b></a>
+        <a href="/projects"><b>Projects</b></a>
+    </div>
+    <div class="main-content">
+        <h1>Manage Your Profile</h1>
+        <div class="profile-section">
+            <h2>Basic Information</h2>
+            <div class="profile-picture">
+                <img src="images/default-profile.png" alt="Profile Picture" id="profilePicture">
+                <span class="upload-icon" id="uploadIcon">+</span>
+            </div>
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email (Gmail)" required>
+        </div>
+
+        <div class="profile-section">
+            <h2>Skills</h2>
+            <input type="text" id="primarySkills" placeholder="Primary Skills" required>
+            <input type="text" id="secondarySkills" placeholder="Secondary Skills">
+        </div>
+
+        <div class="profile-section">
+            <h2>Social Media Links</h2>
+            <input type="url" id="github" placeholder="GitHub Profile Link">
+            <input type="url" id="linkedin" placeholder="LinkedIn Profile Link">
+        </div>
+
+        <div class="edit-save-buttons">
+            <button id="editButton">Edit</button>
+            <button id="saveButton">Save</button>
+        </div>
+    </div>
+    <script>
+        const profilePicture = document.getElementById('profilePicture');
+        const uploadIcon = document.getElementById('uploadIcon');
+        const fullName = document.getElementById('fullName');
+        const email = document.getElementById('email');
+        const primarySkills = document.getElementById('primarySkills');
+        const secondarySkills = document.getElementById('secondarySkills');
+        const github = document.getElementById('github');
+        const linkedin = document.getElementById('linkedin');
+        const editButton = document.getElementById('editButton');
+        const saveButton = document.getElementById('saveButton');
+
+        uploadIcon.addEventListener('click', () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = () => {
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        profilePicture.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            fileInput.click();
+        });
+
+        editButton.addEventListener('click', () => {
+            fullName.disabled = false;
+            email.disabled = false;
+            primarySkills.disabled = false;
+            secondarySkills.disabled = false;
+            github.disabled = false;
+            linkedin.disabled = false;
+        });
+
+        saveButton.addEventListener('click', () => {
+            fullName.disabled = true;
+            email.disabled = true;
+            primarySkills.disabled = true;
+            secondarySkills.disabled = true;
+            github.disabled = true;
+            linkedin.disabled = true;
+            // Code to save the changes, e.g., send the data to the server
+        });
+    </script>
+</body>
+</html>

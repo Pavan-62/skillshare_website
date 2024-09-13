@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Skill Sharing Platform</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #007BFF;
+            color: #fff;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 35px;
+            font-weight: bold;
+            margin-left: 30px;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #343a40;
+            color: #fff;
+            padding: 60px 20px 20px;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            font-size: 20px;
+        }
+
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #007BFF;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 80px 20px 20px;
+            flex-grow: 1;
+        }
+
+        .main-content h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .main-content h2 {
+            color: #007BFF;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .main-content form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .main-content form input,
+        .main-content form textarea,
+        .main-content form button {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        .main-content form input::placeholder,
+        .main-content form textarea::placeholder {
+            font-size: 18px;
+        }
+
+        .main-content form button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 10px 20px;
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .main-content form button:hover {
+            background: #0056b3;
+        }
+
+        .project-list {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .project-item:last-child {
+            border-bottom: none;
+        }
+
+        .project-item h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .project-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .project-item .join-button {
+            background: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .project-item .join-button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="https://tse2.mm.bing.net/th?id=OIP.9xYSorMRnQt8z7b71ocUTAHaHa&pid=Api&P=0&h=180" alt="Logo" class="logo-img">
+            <div class="logo">Skill Sharing Platform</div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <a href="/profile"><b>Profile Management</b></a>
+        <a href="/workshop"><b>Workshops</b></a>
+        <a href="/projects"><b>Projects</b></a>
+    </div>
+    <div class="main-content">
+        <h1>Create or Join Projects</h1>
+        <section>
+            <h2>Create New Project</h2>
+            <form action="/save-project" method="POST">
+                <input type="text" name="title" placeholder="Project Title" required>
+                <textarea name="description" placeholder="Project Description" rows="4" required></textarea>
+                <input type="date" name="date" placeholder="Project Date" required>
+                <input type="text" name="location" placeholder="Project Location" required>
+                <button type="submit">Create Project</button>
+            </form>
+        </section>
+        <section>
+            <h2>Existing Projects</h2>
+            <div class="project-list">
+                <% if (projects.length === 0) { %>
+                    <p>No projects available at the moment. Please check back later.</p>
+                <% } else { %>
+                    <% projects.forEach(project => { %>
+                        <div class="project-item">
+                            <h3><%= project.title %></h3>
+                            <p><%= project.description %></p>
+                            <p>Date: <%= project.date %></p>
+                            <p>Location: <%= project.location %></p>
+                            <button class="join-button">Join Project</button>
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
